@@ -7,7 +7,7 @@ environment,
 method
   id_method = 'MPS'
   multidim_parameter_study
-    partitions = 2 2
+    partitions = 3 3
   model_pointer = 'Model_MPS'
 
 model
@@ -24,8 +24,8 @@ variables
   id_variables = 'V1'
   continuous_design = 2
     descriptors = 'process_parameter' 'faulting_duration'
-    lower_bounds = 0   0.1
-    upper_bounds = 1   1.5
+    lower_bounds = 0   0.2
+    upper_bounds = 1   1.7
 
 interface
   id_interface = 'I_TRUTH'

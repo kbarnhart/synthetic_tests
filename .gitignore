@@ -1,0 +1,17 @@
+
+*.png
+
+*.log
+
+*.rst
+
+*.out
+
+*.csv
+
+*.nc
+
+*/inputs_template.txt
+*/inputs.txt
+
+p1_recovery_with_known_initial_condition/simple_grid_search/simple_line_test\.dat

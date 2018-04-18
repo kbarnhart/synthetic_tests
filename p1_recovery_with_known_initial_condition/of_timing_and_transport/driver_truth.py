@@ -11,6 +11,9 @@ from subprocess import call
 from yaml import load
 
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pylab as plt
 import pandas as pd
 from scipy.optimize import newton
@@ -19,8 +22,6 @@ from landlab import imshow_grid
 from landlab.plot.channel_profile import analyze_channel_network_and_plot, plot_channels_in_map_view
 
 from terrainbento import BasicHySa as Model
-
-plt.switch_backend('agg')
 
 from matplotlib.collections import LineCollection
 from matplotlib import cm

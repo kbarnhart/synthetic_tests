@@ -24,6 +24,8 @@ from terrainbento import BasicHySa as Model
 from matplotlib.collections import LineCollection
 from matplotlib import cm
 
+plt.switch_backend('agg')
+
 def solve_for_Ks(logKs, Kr, P0, U, V, r, Ff, C):
     """ """
     Ks = 10.0**(logKs)

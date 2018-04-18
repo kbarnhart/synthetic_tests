@@ -20,6 +20,7 @@ from landlab.plot.channel_profile import analyze_channel_network_and_plot, plot_
 
 from terrainbento import BasicHySa as Model
 
+plt.switch_backend('agg')
 
 from matplotlib.collections import LineCollection
 from matplotlib import cm

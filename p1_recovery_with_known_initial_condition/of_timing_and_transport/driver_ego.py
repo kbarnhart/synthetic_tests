@@ -383,11 +383,18 @@ data_frame = pd.DataFrame.from_dict(data={'distance':dists_upstr[0][0],
                                           'elevation': elevs[0],
                                           'area': model.grid.at_node['drainage_area'][profile_IDs][0],
                                           'slope': model.grid.at_node['topographic__steepest_slope'][profile_IDs][0]})
-data_frame.to_csv('profile.csv')
+data_frame.to_csv('calib_profile.csv')
 
 #%%
 # open the "truth" objective function AND submit
+truth_fp = 'truth_profile.csv'
+
+df_truth = pd.read_csv(file)
+
+interpolated_slope = np.interp(data_frame.area, data_frame.slope, df_truth.area, left=np.nan, right=np.nan)
+
+ssd = np.nansum((df_truth.slope - interpolated_slope)**2.0)
+
 
 with open(sys.argv[-1], 'w') as f:
-    relief = model.z[model.grid.core_nodes].max() - model.z[model.grid.core_nodes].min()
-    f.write(str(relief))
+    f.write(str(ssd))

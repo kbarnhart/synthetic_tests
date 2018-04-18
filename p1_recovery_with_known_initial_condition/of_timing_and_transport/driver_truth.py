@@ -382,7 +382,7 @@ data_frame = pd.DataFrame.from_dict(data={'distance':dists_upstr[0][0],
                                           'elevation': elevs[0],
                                           'area': model.grid.at_node['drainage_area'][profile_IDs][0],
                                           'slope': model.grid.at_node['topographic__steepest_slope'][profile_IDs][0]})
-data_frame.to_csv('profile.csv')
+data_frame.to_csv('truth_profile.csv')
 
 with open(sys.argv[-1], 'w') as f:
     relief = model.z[model.grid.core_nodes].max() - model.z[model.grid.core_nodes].min()

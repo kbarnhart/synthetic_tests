@@ -1,5 +1,3 @@
-
-
 #!/bin/sh
 #SBATCH --job-name synthetic_test
 #SBATCH --ntasks-per-node 24

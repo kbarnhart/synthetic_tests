@@ -197,7 +197,7 @@ with open(input_file, 'r') as f:
     inputs = load(f)
 
     Pp = float(inputs['process_parameter']) # this varies from 0 to 1, 0 = transport limtited, 1 = detachment limited
-    faulting_duration = float(inputs['faulting_duration'])
+    faulting_duration = float(inputs['faulting_duration']) * 1e6
 
 fault_start = 8 * 1e6
 

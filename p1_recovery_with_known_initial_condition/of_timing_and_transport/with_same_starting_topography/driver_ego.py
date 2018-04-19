@@ -197,7 +197,7 @@ with open(input_file, 'r') as f:
     inputs = load(f)
 
     Pp = float(inputs['process_parameter']) # this varies from 0 to 1, 0 = transport limtited, 1 = detachment limited
-    faulting_duration = float(inputs['faulting_duration'])
+    faulting_duration = float(inputs['faulting_duration']) * 1e6
 
 fault_start = 8 * 1e6
 
@@ -341,10 +341,10 @@ truth_fp = '../../truth_profile.csv'
 
 df_truth = pd.read_csv(truth_fp)
 
-interp_ob = interp1d(data_frame.area, data_frame.slope, bounds_error=False, fill_value=np.nan)
-interpolated_slope = interp_ob(df_truth.area)
+interp_ob = interp1d(np.log10(data_frame.area), np.log10(data_frame.slope), bounds_error=False, fill_value=np.nan)
+log_interpolated_slope = interp_ob(np.log10(df_truth.area))
 
-ssd = np.nansum((df_truth.slope - interpolated_slope)**2.0) * 100000
+ssd = np.nansum((np.log10(df_truth.slope) - log_interpolated_slope)**2.0)
 
 fs = (8, 6)
 fig, ax = plt.subplots(figsize=fs, dpi=300)

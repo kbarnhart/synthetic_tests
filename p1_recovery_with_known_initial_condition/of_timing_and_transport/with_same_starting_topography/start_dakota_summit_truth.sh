@@ -4,7 +4,7 @@
 #SBATCH --partition shas
 #SBATCH --mem-per-cpu 4GB
 #SBATCH --nodes 1
-#SBATCH --time 1:00:00
+#SBATCH --time 10:00:00
 
 # load environment modules
 module load intel/16.0.3

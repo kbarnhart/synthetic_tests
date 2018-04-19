@@ -10,4 +10,4 @@ lines = []
 with open('launch_mini_grids.sh', 'w') as f:
     for file in files:
         folder = os.path.split(file)[0]
-        f.write('cd ' + folder + '; sbatch start_dakota_summit_grid.sh\n')
+        f.write('cd ' + os.path.abspath(folder) + '; sbatch start_dakota_summit_grid.sh\n')

@@ -1,0 +1,98 @@
+# Dakota input file
+environment,
+  method_pointer = 'MPS'
+  tabular_data,
+    tabular_data_file = 'simple_line_test.dat'
+
+method
+  id_method = 'MPS'
+  multidim_parameter_study
+    partitions = 40 40
+  model_pointer = 'Model_MPS'
+
+model
+  id_model = 'Model_MPS'
+  variables_pointer = 'V1'
+  responses_pointer = 'R_MPS'
+  nested
+    sub_method_pointer = 'EGO'
+    optional_interface_pointer = 'I_TRUTH'
+    optional_interface_responses_pointer = 'R_TRUTH'
+    primary_response_mapping 1.0
+
+variables
+  id_variables = 'V1'
+  continuous_design = 2
+    descriptors = 'process_parameter' 'faulting_duration'
+    lower_bounds = 0   0.0
+    upper_bounds = 1   4.0
+
+interface
+  id_interface = 'I_TRUTH'
+  fork,
+	  asynchronous
+    evaluation_concurrency = 23
+  analysis_driver = 'python ../../driver_truth.py
+  parameters_file = 'params.in'
+  results_file = 'results.out'
+  copy_files 'inputs_template.txt'
+  work_directory
+    named 'RESULTS/create_truth'
+    directory_tag
+    #hierarchical_tagging
+    directory_save
+  file_save
+
+responses
+  id_responses = 'R_TRUTH'
+  response_functions = 1
+  response_descriptors = 'relief'
+  no_gradients
+  no_hessians
+
+responses
+   id_responses = 'R_MPS'
+   response_functions = 1
+   response_descriptors = 'best_objective_function'
+   no_gradients
+   no_hessians
+
+
+method
+   id_method = 'EGO'
+     efficient_global
+       gaussian_process surfpack
+       initial_samples = 10
+       seed = 10
+       output quiet
+     model_pointer = 'Model_EGO'
+
+model
+     id_model = 'Model_EGO'
+     single
+       interface_pointer = 'I_EGO'
+     variables_pointer = 'V1'
+     responses_pointer = 'R_EGO'
+
+interface
+     id_interface = 'I_EGO'
+     fork,
+   	  asynchronous
+   	  evaluation_concurrency = 5
+     analysis_driver = 'python ../../driver_ego.py
+     parameters_file = 'params.in'
+     results_file = 'results.out'
+     copy_files 'inputs_template.txt'
+     work_directory
+       named 'calib'
+       directory_tag
+       #hierarchical_tagging
+       directory_save
+     file_save
+
+responses
+     id_responses = 'R_EGO'
+     calibration_terms = 1
+     response_descriptors = 'objective_function'
+     no_gradients
+     no_hessians

@@ -45,15 +45,25 @@ for file in files:
     Xplot[:, size] = X.max() + 0.5*dx
 
     OF = df['objective_function'].values.reshape((size,size))
-
     fs = (8, 6)
+    
+    
     fig, ax = plt.subplots(figsize=fs, dpi=300)
-    plt.pcolormesh(Xplot,Yplot, np.log10(OF), cmap='viridis_r')
-    plt.colorbar()
-    plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*')
-    plt.xlabel('Process Parameter')
-    plt.ylabel('Faulting Duration (ma)')
-
+    plt.pcolormesh(Xplot,Yplot, OF, cmap='gist_earth_r', vmin=0, vmax=10)
+    plt.colorbar(label='Objective Function')
+    plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*', label='Correct Value')
+    plt.xlabel('$\\mathit{Transport}$   $\\mathit{Limited}\\longleftarrow$   Process Parameter   $\\longrightarrow \\mathit{Detachment}$   $\\mathit{Limited}$')
+    plt.ylabel('Faulting Duration (MA)')
     figname = 'OF_fit.Pp_'+str(inputs['process_parameter'])+'.Fd_'+ str(inputs['faulting_duration'])+ '.png'
+    plt.savefig(out+os.path.sep+figname)
+    plt.close()
+
+    fig, ax = plt.subplots(figsize=fs, dpi=300)
+    plt.pcolormesh(Xplot,Yplot, np.log10(OF), cmap='viridis_r', vmin=-8, vmax=2)
+    plt.colorbar(label='Log10(Objective Function)')
+    plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*', label='Correct Value')
+    plt.xlabel('$\\mathit{Transport}$   $\\mathit{Limited}\\longleftarrow$   Process Parameter   $\\longrightarrow \\mathit{Detachment}$   $\\mathit{Limited}$')
+    plt.ylabel('Faulting Duration (MA)')
+    figname = 'OF_log.Pp_'+str(inputs['process_parameter'])+'.Fd_'+ str(inputs['faulting_duration'])+ '.png'
     plt.savefig(out+os.path.sep+figname)
     plt.close()

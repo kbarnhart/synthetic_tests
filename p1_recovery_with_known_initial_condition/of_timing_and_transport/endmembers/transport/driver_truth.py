@@ -165,7 +165,7 @@ class ChannelPlotter(object):
         ax.set_yscale('log')
         plt.xlabel('log 10 Area')
         plt.ylabel('log 10 Slope')
-        plt.savefig('slope_area_' + yr + '.png')
+        plt.savefig('figures/slope_area_' + yr + '.png')
         plt.close()
 
 if os.path.exists('figures') is False:
@@ -205,6 +205,8 @@ with open(input_file, 'r') as f:
 fault_start = 8 * 1e6
 
 total_time = faulting_duration + fault_start
+
+print(total_time)
 
 U_back = 0.00001
 U_fast = 0.001
@@ -275,7 +277,7 @@ params = {'output_filename': 'test_',
           'initial_elevation': 10,
           'initial_noise_std': 3,
           'run_duration' :   total_time,
-          'output_interval' : total_time,
+          'output_interval' : 1e5,
           'dt' : 1000.0,
           'number_of_node_rows': 20,
           'number_of_node_columns': 60,
@@ -336,7 +338,3 @@ data_frame = pd.DataFrame.from_dict(data={'distance':dists_upstr[0][0],
                                           'area': model.grid.at_node['drainage_area'][profile_IDs][0],
                                           'slope': model.grid.at_node['topographic__steepest_slope'][profile_IDs][0]})
 data_frame.to_csv('truth_profile.csv')
-
-with open(sys.argv[-1], 'w') as f:
-    relief = model.z[model.grid.core_nodes].max() - model.z[model.grid.core_nodes].min()
-    f.write(str(relief))

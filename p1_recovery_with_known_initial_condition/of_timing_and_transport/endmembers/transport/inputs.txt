@@ -1,2 +1,2 @@
 process_parameter: 0
-faulting_duration: 1.7
+faulting_duration: 3.0

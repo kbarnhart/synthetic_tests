@@ -5,6 +5,9 @@ import numpy as np
 from yaml import load
 
 import pandas as pd
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
@@ -16,12 +19,12 @@ size = 11
 
 if os.path.exists(out) == False:
     os.mkdir(out)
-    
+
 
 files = glob.glob(pattern)
 for file in files:
     folder = os.path.split(file)[0]
-    
+
     with open(folder+os.path.sep+'inputs.txt', 'r') as f:
         inputs = load(f)
     df = pd.read_csv(file, sep='\s+')
@@ -36,7 +39,7 @@ for file in files:
 
 
     OF = df['objective_function'].values.reshape((size,size))
-    
+
     fs = (8, 6)
     fig, ax = plt.subplots(figsize=fs, dpi=300)
     plt.pcolormesh(X,Y, np.log10(OF), cmap='viridis_r')
@@ -44,6 +47,6 @@ for file in files:
     plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*')
     plt.xlabel('Process Parameter')
     plt.ylabel('Faulting Duration (ma)')
-    
+
     figname = 'OF_fit.Pp_'+str(inputs['process_parameter'])+'.Fd_'+ str(inputs['faulting_duration'])+ '.png'
     plt.savefig(out+os.path.sep+figname)

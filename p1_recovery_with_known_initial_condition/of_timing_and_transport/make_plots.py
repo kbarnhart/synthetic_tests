@@ -10,7 +10,13 @@ import matplotlib.pyplot as plt
 
 pattern = 'RESULTS/create_truth.*/MPS_results.dat'
 
+out = 'figures'
+
 size = 11
+
+if os.path.exists(out) == False:
+    os.mkdir(out)
+    
 
 files = glob.glob(pattern)
 for file in files:
@@ -30,10 +36,14 @@ for file in files:
 
 
     OF = df['objective_function'].values.reshape((size,size))
-    plt.figure()
+    
+    fs = (8, 6)
+    fig, ax = plt.subplots(figsize=fs, dpi=300)
     plt.pcolormesh(X,Y, np.log10(OF), cmap='viridis_r')
     plt.colorbar()
     plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*')
     plt.xlabel('Process Parameter')
     plt.ylabel('Faulting Duration (ma)')
-    plt.show()
+    
+    figname = 'OF_fit.Pp_'+str(inputs['process_parameter'])+'.Fd_'+ str(inputs['faulting_duration'])+ '.png'
+    plt.savefig(out+os.path.sep+figname)

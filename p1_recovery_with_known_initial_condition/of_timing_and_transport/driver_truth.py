@@ -65,16 +65,14 @@ class ChannelPlotter(object):
         self.channel_segments.append(np.array((dists_upstr[0][0], elevs[0] - offset)).T)
         self.xnormalized_segments.append(np.array((dists_upstr[0][0]/max_distance, elevs[0] - offset)).T)
 
-        colors = cm.viridis(self.relative_times)
         self.relative_times.append(self._model.model_time/model.params['run_duration'])
 
-        colors = cm.viridis(self.relative_times)
+        colors = cm.viridis_r(self.relative_times)
 
         xmin = [xy.min(axis=0)[0] for xy in self.channel_segments]
         ymin = [xy.min(axis=0)[1] for xy in self.channel_segments]
         xmax = [xy.max(axis=0)[0] for xy in self.channel_segments]
         ymax = [xy.max(axis=0)[1] for xy in self.channel_segments]
-
 
         fs = (8, 6)
         fig, ax = plt.subplots(figsize=fs, dpi=300)
@@ -327,57 +325,8 @@ largest_da_ind = np.where(model.grid.at_node['drainage_area'] == largest_da)[0][
 #imshow_grid(model.grid, model.grid.at_node['drainage_area'] == largest_da, cmap='viridis')
 #plt.show()
 
-plt.figure()
 (profile_IDs, dists_upstr) = analyze_channel_network_and_plot(model.grid, number_of_channels=1, starting_nodes=[largest_da_ind])
-plt.savefig('profile.png')
-
 elevs = model.z[profile_IDs]
-
-plt.figure()
-plot_channels_in_map_view(model.grid, profile_IDs)
-plt.savefig('topography.png')
-
-plt.figure()
-imshow_grid(model.grid, model.grid.at_node['soil__depth'], cmap='viridis')
-plt.savefig('soil.png')
-
-plt.figure()
-imshow_grid(model.grid, model.grid.at_node['sediment__flux'], cmap='viridis')
-plt.savefig('sediment_flux.png')
-
-U_eff = U_fast + U_back
-area = np.sort(model.grid.at_node['drainage_area'][model.boundary_handler['NormalFault'].faulted_nodes==True])
-area = area[area>0]
-little_q =  np.sort(model.grid.at_node['surface_water__discharge'][model.boundary_handler['NormalFault'].faulted_nodes==True]) ** params['m_sp']
-little_q = little_q[little_q>0]
-area_to_the_m = area ** params['m_sp']
-
-detachment_prediction = (U_eff / (params['K_rock_sp'])) ** (1.0/params['n_sp']) * ((1.0/little_q) ** (1.0/params['n_sp']))
-
-transport_prediction =  (((U_eff * params['v_sc']) / (params['K_sed_sp'] * params['runoff_rate'])) +
-                         ((U_eff) / (params['K_sed_sp']))
-                        ) **(1.0/params['n_sp']) * ((1.0/little_q) ** (1.0/params['n_sp']))
-
-space_prediction =  (((U_eff * params['v_sc']) / (params['K_sed_sp'] * params['runoff_rate'])) +
-                     ((U_eff) / (params['K_rock_sp'] ))
-                     )**(1.0/params['n_sp']) * ((1.0/little_q) ** (1.0/params['n_sp']))
-
-
-plt.figure()
-plt.loglog(model.grid.at_node['drainage_area'][model.boundary_handler['NormalFault'].faulted_nodes==True],
-           model.grid.at_node['topographic__steepest_slope'][model.boundary_handler['NormalFault'].faulted_nodes==True],
-           'k.')
-plt.loglog(model.grid.at_node['drainage_area'][model.boundary_handler['NormalFault'].faulted_nodes==False],
-           model.grid.at_node['topographic__steepest_slope'][model.boundary_handler['NormalFault'].faulted_nodes==False],
-           'r.')
-
-plt.loglog(area, detachment_prediction, 'c', lw=5)
-plt.loglog(area, transport_prediction, 'b')
-plt.loglog(area, space_prediction, 'm')
-plt.legend(['Faulted Nodes', 'Unfaulted Nodes', 'Detachment Prediction', 'Transport Prediction', 'Space Prediction'])
-plt.xlabel('log 10 Area')
-plt.ylabel('log 10 Slope')
-plt.savefig('slope_area.png')
 
 data_frame = pd.DataFrame.from_dict(data={'distance':dists_upstr[0][0],
                                           'elevation': elevs[0],

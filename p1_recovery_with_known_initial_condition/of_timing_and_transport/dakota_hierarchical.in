@@ -7,7 +7,7 @@ environment,
 method
   id_method = 'MPS'
   multidim_parameter_study
-    partitions = 3 3
+    partitions = 10 10
   model_pointer = 'Model_MPS'
 
 model
@@ -31,11 +31,11 @@ interface
   id_interface = 'I_TRUTH'
   fork,
 	  asynchronous
-	  evaluation_concurrency = 23
+    evaluation_concurrency = 23
   analysis_driver = 'python ../../driver_truth.py
   parameters_file = 'params.in'
   results_file = 'results.out'
-  copy_files 'inputs_template.txt'
+  copy_files 'inputs_template.txt' 'start_dakota_local_ego.sh' 'start_dakota_summit_ego.sh' 'start_dakota_local_grid.sh' 'start_dakota_summit_grid.sh' 'dakota_grid.in' 'dakota_ego.in'
   work_directory
     named 'RESULTS/create_truth'
     directory_tag

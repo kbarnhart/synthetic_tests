@@ -1,0 +1,50 @@
+# Dakota input file
+
+environment,
+  method_pointer = 'MPS'
+  tabular_data,
+    tabular_data_file = 'MPS_results.dat'
+
+method
+   id_method = 'MPS'
+    multidim_parameter_study
+     partitions = 10 10
+     model_pointer = 'Model_MPS'
+
+model
+     id_model = 'Model_MPS'
+     single
+       interface_pointer = 'I_MPS'
+     variables_pointer = 'V1'
+     responses_pointer = 'R_MPS'
+
+variables
+ id_variables = 'V1'
+ continuous_design = 2
+   descriptors = 'process_parameter' 'faulting_duration'
+   lower_bounds = 0   0.2
+   upper_bounds = 1   1.7
+
+
+interface
+     id_interface = 'I_MPS'
+     fork,
+   	  asynchronous
+   	  evaluation_concurrency = 23
+     analysis_driver = 'python ../../../../driver_ego.py
+     parameters_file = 'params.in'
+     results_file = 'results.out'
+     copy_files '../../inputs_template.txt'
+     work_directory
+       named 'GRID/run'
+       directory_tag
+       #hierarchical_tagging
+       directory_save
+     file_save
+
+responses
+     id_responses = 'R_MPS'
+     calibration_terms = 1
+     response_descriptors = 'objective_function'
+     no_gradients
+     no_hessians

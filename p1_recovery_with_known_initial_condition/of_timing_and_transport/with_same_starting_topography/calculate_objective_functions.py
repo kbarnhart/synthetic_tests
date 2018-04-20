@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
 pattern = 'RESULTS/create_truth.*/truth_profile.csv'
-files = glob.glob(pattern)
+files = np.sort(glob.glob(pattern))
     
 def calculate_objective_function(file):
     print(file)

@@ -9,26 +9,27 @@ import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 
+
 import matplotlib.pyplot as plt
 
 
-pattern = 'RESULTS/create_truth.*/MPS_results.dat'
+pattern = 'RESULTS/create_truth.*/calib_results.csv'
 
 out = 'figures'
 
-size = 11
+size = 41
 
 if os.path.exists(out) == False:
     os.mkdir(out)
 
 
-files = glob.glob(pattern)
+files = np.sort(glob.glob(pattern))
 for file in files:
     folder = os.path.split(file)[0]
 
     with open(folder+os.path.sep+'inputs.txt', 'r') as f:
         inputs = load(f)
-    df = pd.read_csv(file, sep='\s+')
+    df = pd.read_csv(file)
 
     X = df.process_parameter.values.reshape((size,size))
     Y = df.faulting_duration.values.reshape((size,size))

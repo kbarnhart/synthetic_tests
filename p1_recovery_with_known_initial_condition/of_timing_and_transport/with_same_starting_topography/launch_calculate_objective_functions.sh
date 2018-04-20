@@ -10,4 +10,4 @@
 source ~/.bash_profile
 
 # calculate syntheis
-python calculate_objective_functions.py.py
+python calculate_objective_functions.py

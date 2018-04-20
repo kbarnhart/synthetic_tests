@@ -72,27 +72,31 @@ def calculate_objective_function(file):
                         'objective_function': ssd})
     
  
-        fs = (8, 6)
-        fig, ax = plt.subplots(figsize=fs, dpi=300)
-        plt.plot(df_truth.area, df_truth.slope, label='Truth')
-
-        plt.plot(data_frame.area, data_frame.slope, label='Run')
-        plt.legend()
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        plt.xlabel('log 10 Area')
-        plt.ylabel('log 10 Slope')
-        
-        plt.text(4e5, 1e-2, ('Truth:\nPp = ' + str(np.round(Pp_truth, 2)) + '\n'
-                             'Fd = ' + str(np.round(Fd_truth, 2)) + '\n\n'
-                             'Run :\nPp = ' + str(np.round(Pp_data, 2)) + '\n'
-                             'Fd = ' + str(np.round(Fd_data, 2)) + '\n'))
-                             
-        plt.savefig(folder+os.path.sep+'CALIB/obj_func.' + str(data_run) + '.png')
-        plt.close()
+#        fs = (8, 6)
+#        fig, ax = plt.subplots(figsize=fs, dpi=300)
+#        plt.plot(df_truth.area, df_truth.slope, label='Truth')
+#
+#        plt.plot(data_frame.area, data_frame.slope, label='Run')
+#        plt.legend()
+#        ax.set_xscale('log')
+#        ax.set_yscale('log')
+#        plt.xlabel('log 10 Area')
+#        plt.ylabel('log 10 Slope')
+#        
+#        plt.text(4e5, 1e-2, ('Truth:\nPp = ' + str(np.round(Pp_truth, 2)) + '\n'
+#                             'Fd = ' + str(np.round(Fd_truth, 2)) + '\n\n'
+#                             'Run :\nPp = ' + str(np.round(Pp_data, 2)) + '\n'
+#                             'Fd = ' + str(np.round(Fd_data, 2)) + '\n'))
+#                             
+#        plt.savefig(folder+os.path.sep+'CALIB/obj_func.' + str(data_run) + '.png')
+#        plt.close()
       
     df_out = pd.DataFrame(df_list)
+    df_out.set_index('run', inplace=True)
+    df_out.sort_index(axis=0, inplace=True)
     
     df_out.to_csv(folder + os.path.sep + 'calib_results.csv')
-
-output = Parallel(n_jobs=20)(delayed(calculate_objective_function)(file) for file in files)
+#%%
+#output = Parallel(n_jobs=20)(delayed(calculate_objective_function)(file) for file in files)
+for file in files:
+    calculate_objective_function(file)

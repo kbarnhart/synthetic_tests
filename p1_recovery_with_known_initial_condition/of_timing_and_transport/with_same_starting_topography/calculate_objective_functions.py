@@ -6,6 +6,8 @@ Created on Thu Apr 19 19:13:39 2018
 @author: barnhark
 """
 
+## same starting topo
+
 import glob
 import os
 import numpy as np
@@ -27,6 +29,7 @@ pattern = 'RESULTS/create_truth.*/truth_profile.csv'
 files = np.sort(glob.glob(pattern))
     
 def calculate_objective_function(file):
+#for file in files:
     print(file)
     
     pattern = 'RESULTS/create_truth.*/truth_profile.csv'
@@ -63,7 +66,9 @@ def calculate_objective_function(file):
         interp_ob = interp1d(np.log10(data_frame.area), np.log10(data_frame.slope), bounds_error=False, fill_value=np.nan)
         log_interpolated_slope = interp_ob(np.log10(df_truth.area))
         
-        ssd = np.nansum((np.log10(df_truth.slope) - log_interpolated_slope)**2.0)
+        steep_enough = np.log10(df_truth.slope) > -2
+        ssd = np.nanmean((np.log10(df_truth.slope[steep_enough]) - log_interpolated_slope[steep_enough])**2.0)
+        
         
         
         df_list.append({'run': data_run,
@@ -97,6 +102,6 @@ def calculate_objective_function(file):
     
     df_out.to_csv(folder + os.path.sep + 'calib_results.csv')
 #%%
-#output = Parallel(n_jobs=20)(delayed(calculate_objective_function)(file) for file in files)
-for file in files:
-    calculate_objective_function(file)
+output = Parallel(n_jobs=5)(delayed(calculate_objective_function)(file) for file in files)
+#for file in files:
+#    calculate_objective_function(file))

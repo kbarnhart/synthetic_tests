@@ -57,7 +57,7 @@ for file in files:
     plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*', label='Correct Value')
     plt.xlabel('$\\mathit{Transport}$ $\\mathit{Limited}\\longleftarrow$   Process Parameter   $\\longrightarrow \\mathit{Detachment}$ $\\mathit{Limited}$')
     plt.ylabel('Faulting Duration (MA)')
-    plt.title('Different initital topography random seed')
+    plt.title('Noise in K')
     figname = 'Pp_'+str(Pp)+'.Fd_'+ str(Fd)+ '.OF_abs.png'
     plt.savefig(out+os.path.sep+figname)
     plt.close()
@@ -68,7 +68,7 @@ for file in files:
     plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*', label='Correct Value')
     plt.xlabel('$\\mathit{Transport}$ $\\mathit{Limited}\\longleftarrow$   Process Parameter   $\\longrightarrow \\mathit{Detachment}$ $\\mathit{Limited}$')
     plt.ylabel('Faulting Duration (MA)')
-    plt.title('Different initital topography random seed')
+    plt.title('Noise in K')
     figname = 'Pp_'+str(Pp)+'.Fd_'+ str(Fd)+ '.OF_log.png'
     plt.savefig(out+os.path.sep+figname)
     plt.close()

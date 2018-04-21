@@ -60,12 +60,14 @@ def calculate_objective_function(file):
             Fd_data = data_inputs['faulting_duration']
         
         data_frame = pd.read_csv(data_file)
-        
+    
+    
         interp_ob = interp1d(np.log10(data_frame.area), np.log10(data_frame.slope), bounds_error=False, fill_value=np.nan)
         log_interpolated_slope = interp_ob(np.log10(df_truth.area))
         
         steep_enough = np.log10(df_truth.slope) > -2
         ssd = np.nanmean((np.log10(df_truth.slope[steep_enough]) - log_interpolated_slope[steep_enough])**2.0)
+        
         
         df_list.append({'run': data_run,
                         'process_parameter': Pp_data,

@@ -26,7 +26,7 @@ if os.path.exists(out) == False:
 files = np.sort(glob.glob(pattern))
 for file in files:
     folder = os.path.split(file)[0]
-
+    print(folder)
     with open(folder+os.path.sep+'inputs.txt', 'r') as f:
         inputs = load(f)
     df = pd.read_csv(file)
@@ -48,23 +48,27 @@ for file in files:
     OF = df['objective_function'].values.reshape((size,size))
     fs = (8, 6)
     
+    Pp = np.round(inputs['process_parameter'], 2)
+    Fd = np.round(inputs['faulting_duration'], 2)
     
     fig, ax = plt.subplots(figsize=fs, dpi=300)
-    plt.pcolormesh(Xplot,Yplot, OF, cmap='gist_earth_r', vmin=0, vmax=2)
+    plt.pcolormesh(Xplot,Yplot, OF, cmap='plasma_r', vmin=0, vmax=.3)
     plt.colorbar(label='Objective Function')
     plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*', label='Correct Value')
     plt.xlabel('$\\mathit{Transport}$ $\\mathit{Limited}\\longleftarrow$   Process Parameter   $\\longrightarrow \\mathit{Detachment}$ $\\mathit{Limited}$')
     plt.ylabel('Faulting Duration (MA)')
-    figname = 'OF_fit.Pp_'+str(inputs['process_parameter'])+'.Fd_'+ str(inputs['faulting_duration'])+ '.png'
+    plt.title('Same initital topography random seed')
+    figname = 'Pp_'+str(Pp)+'.Fd_'+ str(Fd)+ '.OF_abs.png'
     plt.savefig(out+os.path.sep+figname)
     plt.close()
 
     fig, ax = plt.subplots(figsize=fs, dpi=300)
-    plt.pcolormesh(Xplot,Yplot, np.log10(OF), cmap='viridis_r', vmin=-8, vmax=2)
+    plt.pcolormesh(Xplot,Yplot, np.log10(OF), cmap='viridis_r', vmin=-6, vmax=1)
     plt.colorbar(label='Log10(Objective Function)')
     plt.plot(inputs['process_parameter'], inputs['faulting_duration'], 'r*', label='Correct Value')
     plt.xlabel('$\\mathit{Transport}$ $\\mathit{Limited}\\longleftarrow$   Process Parameter   $\\longrightarrow \\mathit{Detachment}$ $\\mathit{Limited}$')
     plt.ylabel('Faulting Duration (MA)')
-    figname = 'OF_log.Pp_'+str(inputs['process_parameter'])+'.Fd_'+ str(inputs['faulting_duration'])+ '.png'
+    plt.title('Same initital topography random seed')
+    figname = 'Pp_'+str(Pp)+'.Fd_'+ str(Fd)+ '.OF_log.png'
     plt.savefig(out+os.path.sep+figname)
     plt.close()
